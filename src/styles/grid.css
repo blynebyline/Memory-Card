@@ -1,0 +1,43 @@
+:root{
+    --bg-color: #fcf7f8;
+    --txt-color: #1d1a05;
+    --brand-color: #6d213c;
+    --accent-color: #c7ee1b;
+    --header-bg: #78f77a;
+}
+
+.card-container{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1em;
+    padding: 1em;
+}
+
+.card {
+    background-color: var(--brand-color);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 1em;
+    padding: 1em;
+    cursor: pointer;
+    border-radius: 8px;
+    box-shadow: 4px 4px 10px 2px rgba(0, 0, 0, 0.2);
+}
+
+.card:hover{
+    border: 3px solid var(--header-bg);
+    opacity: .8;
+}
+
+.card img{
+    object-fit: contain;
+    width: 100%;
+}
+
+.card p {
+    margin-top: .5em;
+    text-align: center;
+    color: var(--accent-color);
+}
