@@ -1,6 +1,8 @@
 import './App.css'
 import './styles/grid.css'
+import { fetchPokemon } from './pokemon'
 import image from './assets/image.png' 
+import { useState, useEffect } from 'react'
 
 function App() {
   return (
@@ -21,6 +23,21 @@ function Header(){
 }
 
 function Main(){
+  const [pokemons, setPokemons] = useState([]);
+  useEffect(() => {
+    const fetchAllPokemons = async () => {
+      const results = await Promise.all([fetchPokemon("pikachu"), fetchPokemon("bulbasaur"), fetchPokemon("snorlax"),
+                  fetchPokemon("arceus"), fetchPokemon("psyduck"), fetchPokemon("squirtle"), fetchPokemon("charizard"), 
+                  fetchPokemon("gardevoir"), fetchPokemon("gyarados"), fetchPokemon("eevee")
+      ])
+      setPokemons(results)
+    }
+  
+    fetchAllPokemons()
+  }, [])
+
+  console.log(pokemons)
+
   return (
     <main>
       <div className="card-container">
