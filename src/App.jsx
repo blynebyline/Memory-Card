@@ -36,8 +36,8 @@ function Main(){
     fetchAllPokemons()
   }, [])
 
-  console.log(pokemons)
-
+  console.log(rearrangeCard(pokemons))
+  console.log(rearrangeCard(pokemons))
   return (
     <main>
       <div className="card-container">
@@ -76,6 +76,18 @@ function Main(){
 
     </main>
   )
+}
+
+function rearrangeCard(pokemons){
+  const shuffled = [...pokemons]; 
+  
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    
+    const j = Math.floor(Math.random() * (i + 1)); 
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]; 
+  }
+  
+  return shuffled;
 }
 
 export default App
