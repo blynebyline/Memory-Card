@@ -1,34 +1,19 @@
 import './App.css'
 import './styles/grid.css'
-import { fetchPokemon } from './pokemon'
-import image from './assets/image.png' 
+import { FetchPokemon } from './pokemon'
 import { useState, useEffect } from 'react'
 
 function App() {
-  return (
-    <>
-    <Header />
-    <Main />
-    </>
-  )
-}
 
-function Header(){
-  return (
-    <header>
-      <h3>Current Score: </h3>
-      <h3>High Score: </h3>
-    </header>
-  )
-}
-
-function Main(){
+  const [clicked, setClicked] = useState(new Set());
+  const [currentScore, setCurrentScore] = useState(0);
+  const [highScore, setHighScore] = useState(0);
   const [pokemons, setPokemons] = useState([]);
   useEffect(() => {
     const fetchAllPokemons = async () => {
-      const results = await Promise.all([fetchPokemon("pikachu"), fetchPokemon("bulbasaur"), fetchPokemon("snorlax"),
-                  fetchPokemon("arceus"), fetchPokemon("psyduck"), fetchPokemon("squirtle"), fetchPokemon("charizard"), 
-                  fetchPokemon("gardevoir"), fetchPokemon("gyarados"), fetchPokemon("eevee")
+      const results = await Promise.all([FetchPokemon(25), FetchPokemon(1), FetchPokemon(143),
+                  FetchPokemon(493), FetchPokemon(54), FetchPokemon(7), FetchPokemon(6), 
+                  FetchPokemon(282), FetchPokemon(130), FetchPokemon(133)
       ])
       setPokemons(results)
     }
@@ -36,49 +21,53 @@ function Main(){
     fetchAllPokemons()
   }, [])
 
-  console.log(rearrangeCard(pokemons))
-  console.log(rearrangeCard(pokemons))
+  
+  function HandleClick(id){
+    if(clicked.has(id)){
+      console.log("GAME OVER")
+      setClicked(new Set())
+      setCurrentScore(0)
+    } else {
+      const newPokemon = RearrangeCard(pokemons);
+      setPokemons(newPokemon);
+      setClicked(prev => new Set(prev).add(id))
+      const newScore = currentScore + 1;
+      setCurrentScore(newScore)
+      if(newScore > highScore) setHighScore(newScore)
+    }
+  }
+
+
+  return (
+    <>
+    <Header currentScore={currentScore} highScore={highScore}/>
+    <Main pokemons={pokemons} HandleClick={HandleClick}/>
+    </>
+  )
+}
+
+function Header({ currentScore, highScore}){
+  return (
+    <header>
+      <h3>Current Score: {currentScore}</h3>
+      <h3>High Score: {highScore}</h3>
+    </header>
+  )
+}
+
+function Main({ pokemons, HandleClick}){
   return (
     <main>
       <div className="card-container">
-        <div className="card">
-          <img src={image}></img>
-          <p>Sample Name</p>
-        </div>
-
-        <div className="card">
-          <img src={image}></img>
-          <p>Sample Name</p>
-        </div>
-
-        <div className="card">
-          <img src={image}></img>
-          <p>Sample Name</p>
-        </div>
-
-        <div className="card">
-          <img src={image}></img>
-          <p>Sample Name</p>
-        </div>
-
-        <div className="card">
-          <img src={image}></img>
-          <p>Sample Name</p>
-        </div>
-
-        <div className="card">
-          <img src={image}></img>
-          <p>Sample Name</p>
-        </div>
+        {pokemons.map(pokemon => (
+          <Card key={pokemon.id} pokemon={pokemon} onClick={() => HandleClick(pokemon.id)}/>
+        ))}
       </div>
-
-      
-
     </main>
   )
 }
 
-function rearrangeCard(pokemons){
+function RearrangeCard(pokemons){
   const shuffled = [...pokemons]; 
   
   for (let i = shuffled.length - 1; i > 0; i--) {
@@ -88,6 +77,15 @@ function rearrangeCard(pokemons){
   }
   
   return shuffled;
+}
+
+function Card({ pokemon, onClick }){
+  return (
+    <button className="card" onClick={onClick}>
+      <img src={pokemon.front_shiny} alt={pokemon.name}></img>
+      <p>{pokemon.name}</p>
+    </button>
+  )
 }
 
 export default App
