@@ -1,6 +1,7 @@
 import './App.css'
 import './styles/grid.css'
 import { FetchPokemon } from './pokemon'
+import { Card, RearrangeCard } from './card'
 import { useState, useEffect } from 'react'
 
 function App() {
@@ -64,27 +65,6 @@ function Main({ pokemons, HandleClick}){
         ))}
       </div>
     </main>
-  )
-}
-
-function RearrangeCard(pokemons){
-  const shuffled = [...pokemons]; 
-  
-  for (let i = shuffled.length - 1; i > 0; i--) {
-    
-    const j = Math.floor(Math.random() * (i + 1)); 
-    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]; 
-  }
-  
-  return shuffled;
-}
-
-function Card({ pokemon, onClick }){
-  return (
-    <button className="card" onClick={onClick}>
-      <img src={pokemon.front_shiny} alt={pokemon.name}></img>
-      <p>{pokemon.name}</p>
-    </button>
   )
 }
 
